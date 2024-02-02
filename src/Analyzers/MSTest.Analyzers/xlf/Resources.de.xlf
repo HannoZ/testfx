@@ -35,12 +35,12 @@
       <trans-unit id="TestClassShouldBeValidDescription">
         <source>Test classes, classes marked with the '[TestClass]' attribute, should respect the following layout to be considered valid by MSTest:
 - it should be 'public' (or 'internal' if '[assembly: DiscoverInternals]' attribute is set)
-- it should not be 'static'
+- it should not be 'static' (except if it contains only 'AssemblyInitialize' and/or 'AssemblyCleanup' methods)
 - it should not be generic.</source>
-        <target state="translated">Testklassen, Klassen, die mit dem Attribut "[TestClass]" gekennzeichnet sind, sollten das folgende Layout berücksichtigen, um von MSTest als gültig angesehen zu werden:
-– es darf "public" (oder "internal" sein, wenn das Attribut "[assembly: DiscoverInternals]" festgelegt ist)
-– es darf nicht "static" sein
-– es darf nicht generisch sein.</target>
+        <target state="translated">Testklassen (mit dem „[TestClass]“-Attribut gekennzeichnete Klassen) müssen das folgende Layout berücksichtigen, um von MSTest als gültig betrachtet zu werden:
+– Sie müssen auf „public“ festgelegt sein (oder auf „internal“, falls das „[assembly: DiscoverInternals]“-Attribut festgelegt ist).
+– Sie dürfen nicht auf „static“ festgelegt sein (außer wenn sie nur die Methoden „AssemblyInitialize“ und/oder „AssemblyCleanup“ enthalten)
+– Sie dürfen nicht generisch sein.</target>
         <note />
       </trans-unit>
       <trans-unit id="TestClassShouldBeValidMessageFormat_NotGeneric">
@@ -166,13 +166,23 @@
         <note />
       </trans-unit>
       <trans-unit id="TestMethodShouldBeValidMessageFormat_ReturnType">
-        <source>Test method '{0}' should return 'void' or 'Task'</source>
-        <target state="translated">Die Testmethode "{0}" sollte "void" oder "Task" zurückgeben.</target>
+        <source>Test method '{0}' should return 'void', 'Task' or 'ValueTask'</source>
+        <target state="new">Test method '{0}' should return 'void', 'Task' or 'ValueTask'</target>
         <note />
       </trans-unit>
       <trans-unit id="TestMethodShouldBeValidTitle">
         <source>Test methods should have valid layout</source>
         <target state="translated">Testmethoden müssen über ein gültiges Layout verfügen.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseAttributeOnTestMethodAnalyzerMessageFormat">
+        <source>[{0}] can only be set on methods marked with [TestMethod]</source>
+        <target state="new">[{0}] can only be set on methods marked with [TestMethod]</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseAttributeOnTestMethodAnalyzerTitle">
+        <source>[{0}] can only be set on methods marked with [TestMethod]</source>
+        <target state="new">[{0}] can only be set on methods marked with [TestMethod]</target>
         <note />
       </trans-unit>
       <trans-unit id="UseParallelizeAttributeAnalyzerDescription">

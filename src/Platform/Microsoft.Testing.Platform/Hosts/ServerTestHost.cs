@@ -90,11 +90,7 @@ internal sealed partial class ServerTestHost : CommonTestHost, IServerTestHost, 
         _testFrameworkManager = testFrameworkManager;
         _testApplicationCancellationTokenSource = serviceProvider.GetTestApplicationCancellationTokenSource();
         _testSessionManager = testSessionManager;
-
-        // TODO: We should register this service in TestHostBuilder
-        // this is only temporary as we are only using it in the ServerTestHost
-        // and we don't support multi telemetry collectors
-        _telemetryService = new ServerTelemetry(serviceProvider);
+        _telemetryService = new ServerTelemetry(this);
         _clientToServerRequests = new();
         _serverToClientRequests = new();
 
@@ -113,14 +109,6 @@ internal sealed partial class ServerTestHost : CommonTestHost, IServerTestHost, 
             AppDomain.CurrentDomain.UnhandledException += OnCurrentDomainUnhandledException;
             TaskScheduler.UnobservedTaskException += OnTaskSchedulerUnobservedTaskException;
         }
-
-        // Note: Register the host to allow other services to use it as a callback target.
-        //       Services like logging and output processor will eventually log back
-        //       to this service.
-        // Note: The services need to check the IsInitialized state, since the
-        //       logger can be used before the client connects and at the moment
-        //       the messages are sent right away.
-        ServiceProvider.AddService(this);
     }
 
     public bool IsInitialized => _messageHandler is not null;
@@ -151,6 +139,14 @@ internal sealed partial class ServerTestHost : CommonTestHost, IServerTestHost, 
         {
             await _logger.LogInformationAsync("Starting server mode");
             _messageHandler = await _messageHandlerFactory.CreateMessageHandlerAsync(_testApplicationCancellationTokenSource.CancellationToken);
+
+            // Initialize the ServerLoggerForwarderProvider, it can be null if diagnostic is disabled.
+            var serviceLoggerForwarder = ServiceProvider.GetService<ServerLoggerForwarderProvider>();
+            if (serviceLoggerForwarder is not null)
+            {
+                await serviceLoggerForwarder.InitializeAsync(this);
+            }
+
             await HandleMessagesAsync();
 
             (_messageHandler as IDisposable)?.Dispose();
@@ -480,7 +476,7 @@ internal sealed partial class ServerTestHost : CommonTestHost, IServerTestHost, 
         // Build the per request objects
         var filterFactory = new ServerTestExecutionFilterFactory();
         var invoker = new TestHostTestFrameworkInvoker(perRequestServiceProvider);
-        var testNodeUpdateProcessor = new PerRequestServerDataConsumer(perRequestServiceProvider, args.RunId, perRequestServiceProvider.GetTask());
+        var testNodeUpdateProcessor = new PerRequestServerDataConsumer(perRequestServiceProvider, this, args.RunId, perRequestServiceProvider.GetTask());
 
         DateTimeOffset adapterLoadStart = _clock.UtcNow;
 
@@ -673,7 +669,7 @@ internal sealed partial class ServerTestHost : CommonTestHost, IServerTestHost, 
     internal Task SendTestUpdateCompleteAsync(Guid runId)
         => SendTestUpdateAsync(new TestNodeStateChangedEventArgs(runId, Changes: null));
 
-    internal async Task SendTestUpdateAsync(TestNodeStateChangedEventArgs update)
+    public async Task SendTestUpdateAsync(TestNodeStateChangedEventArgs update)
         => await SendMessageAsync(
             method: JsonRpcMethods.TestingTestUpdatesTests,
             @params: update,

@@ -117,7 +117,7 @@ namespace MSTest.Analyzers {
         /// <summary>
         ///   Looks up a localized string similar to Test classes, classes marked with the &apos;[TestClass]&apos; attribute, should respect the following layout to be considered valid by MSTest:
         ///- it should be &apos;public&apos; (or &apos;internal&apos; if &apos;[assembly: DiscoverInternals]&apos; attribute is set)
-        ///- it should not be &apos;static&apos;
+        ///- it should not be &apos;static&apos; (except if it contains only &apos;AssemblyInitialize&apos; and/or &apos;AssemblyCleanup&apos; methods)
         ///- it should not be generic..
         /// </summary>
         internal static string TestClassShouldBeValidDescription {
@@ -318,7 +318,7 @@ namespace MSTest.Analyzers {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test method &apos;{0}&apos; should return &apos;void&apos; or &apos;Task&apos;.
+        ///   Looks up a localized string similar to Test method &apos;{0}&apos; should return &apos;void&apos;, &apos;Task&apos; or &apos;ValueTask&apos;.
         /// </summary>
         internal static string TestMethodShouldBeValidMessageFormat_ReturnType {
             get {
@@ -332,6 +332,24 @@ namespace MSTest.Analyzers {
         internal static string TestMethodShouldBeValidTitle {
             get {
                 return ResourceManager.GetString("TestMethodShouldBeValidTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{0}] can only be set on methods marked with [TestMethod].
+        /// </summary>
+        internal static string UseAttributeOnTestMethodAnalyzerMessageFormat {
+            get {
+                return ResourceManager.GetString("UseAttributeOnTestMethodAnalyzerMessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [{0}] can only be set on methods marked with [TestMethod].
+        /// </summary>
+        internal static string UseAttributeOnTestMethodAnalyzerTitle {
+            get {
+                return ResourceManager.GetString("UseAttributeOnTestMethodAnalyzerTitle", resourceCulture);
             }
         }
         

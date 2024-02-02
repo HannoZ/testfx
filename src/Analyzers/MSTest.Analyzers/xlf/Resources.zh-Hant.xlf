@@ -35,11 +35,11 @@
       <trans-unit id="TestClassShouldBeValidDescription">
         <source>Test classes, classes marked with the '[TestClass]' attribute, should respect the following layout to be considered valid by MSTest:
 - it should be 'public' (or 'internal' if '[assembly: DiscoverInternals]' attribute is set)
-- it should not be 'static'
+- it should not be 'static' (except if it contains only 'AssemblyInitialize' and/or 'AssemblyCleanup' methods)
 - it should not be generic.</source>
         <target state="translated">測試類別 (標示為 '[TestClass]' 屬性的類別) 應該遵循下列配置，讓 MSTest 視為有效:
 - 它應該是 'public' (如果設定 '[assembly: DiscoverInternals]' 屬性，則為 'internal')
-- 它應該是 'static'
+- 它不應該是 'static' (除非其僅包含 'AssemblyInitialize' 和/或 'AssemblyCleanup' 方法)
 - 它不能是泛型。</target>
         <note />
       </trans-unit>
@@ -166,13 +166,23 @@
         <note />
       </trans-unit>
       <trans-unit id="TestMethodShouldBeValidMessageFormat_ReturnType">
-        <source>Test method '{0}' should return 'void' or 'Task'</source>
-        <target state="translated">測試方法 '{0}' 應傳回 'void' 或 'Task'</target>
+        <source>Test method '{0}' should return 'void', 'Task' or 'ValueTask'</source>
+        <target state="new">Test method '{0}' should return 'void', 'Task' or 'ValueTask'</target>
         <note />
       </trans-unit>
       <trans-unit id="TestMethodShouldBeValidTitle">
         <source>Test methods should have valid layout</source>
         <target state="translated">測試方法應具備有效的配置</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseAttributeOnTestMethodAnalyzerMessageFormat">
+        <source>[{0}] can only be set on methods marked with [TestMethod]</source>
+        <target state="new">[{0}] can only be set on methods marked with [TestMethod]</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseAttributeOnTestMethodAnalyzerTitle">
+        <source>[{0}] can only be set on methods marked with [TestMethod]</source>
+        <target state="new">[{0}] can only be set on methods marked with [TestMethod]</target>
         <note />
       </trans-unit>
       <trans-unit id="UseParallelizeAttributeAnalyzerDescription">

@@ -35,11 +35,11 @@
       <trans-unit id="TestClassShouldBeValidDescription">
         <source>Test classes, classes marked with the '[TestClass]' attribute, should respect the following layout to be considered valid by MSTest:
 - it should be 'public' (or 'internal' if '[assembly: DiscoverInternals]' attribute is set)
-- it should not be 'static'
+- it should not be 'static' (except if it contains only 'AssemblyInitialize' and/or 'AssemblyCleanup' methods)
 - it should not be generic.</source>
         <target state="translated">Las clases de prueba, las clases marcadas con el atributo '[TestClass]', deben respetar el siguiente diseño para que MSTest lo considere válido:
 - debe ser 'public' (o 'internal' si se establece el atributo '[assembly: DiscoverInternals]')
-- No debe ser "static"
+- no debe ser "static" (excepto si contiene solo los métodos "AssemblyInitialize" o "AssemblyCleanup")
 : no debe ser genérico.</target>
         <note />
       </trans-unit>
@@ -166,13 +166,23 @@
         <note />
       </trans-unit>
       <trans-unit id="TestMethodShouldBeValidMessageFormat_ReturnType">
-        <source>Test method '{0}' should return 'void' or 'Task'</source>
-        <target state="translated">El método de prueba '{0}' debe devolver 'void' o 'Task'</target>
+        <source>Test method '{0}' should return 'void', 'Task' or 'ValueTask'</source>
+        <target state="new">Test method '{0}' should return 'void', 'Task' or 'ValueTask'</target>
         <note />
       </trans-unit>
       <trans-unit id="TestMethodShouldBeValidTitle">
         <source>Test methods should have valid layout</source>
         <target state="translated">Los métodos de prueba deben tener un diseño válido</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseAttributeOnTestMethodAnalyzerMessageFormat">
+        <source>[{0}] can only be set on methods marked with [TestMethod]</source>
+        <target state="new">[{0}] can only be set on methods marked with [TestMethod]</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="UseAttributeOnTestMethodAnalyzerTitle">
+        <source>[{0}] can only be set on methods marked with [TestMethod]</source>
+        <target state="new">[{0}] can only be set on methods marked with [TestMethod]</target>
         <note />
       </trans-unit>
       <trans-unit id="UseParallelizeAttributeAnalyzerDescription">

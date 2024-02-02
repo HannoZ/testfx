@@ -67,7 +67,7 @@ internal class TestHostBuilder(IFileSystem fileSystem, IRuntimeFeature runtimeFe
         DateTimeOffset createBuilderStart)
     {
         // ============= SETUP COMMON SERVICE USED IN ALL MODES ===============//
-        ArgumentGuard.IsNotNull(TestFramework);
+        ApplicationStateGuard.Ensure(TestFramework is not null);
 
         var systemClock = new SystemClock();
         DateTimeOffset buildBuilderStart = systemClock.UtcNow;
@@ -209,11 +209,13 @@ internal class TestHostBuilder(IFileSystem fileSystem, IRuntimeFeature runtimeFe
             Logging.AddProvider((_, _) => loggingState.FileLoggerProvider);
         }
 
-        // Build the command like service.
+        // Register the server mode log forwarder if needed. We follow the console --diagnostic behavior.
         ICommandLineOptions commandLineOptions = serviceProvider.GetCommandLineOptions();
-        if (commandLineOptions.IsOptionSet(PlatformCommandLineProvider.ServerOptionKey))
+        if (commandLineOptions.IsOptionSet(PlatformCommandLineProvider.ServerOptionKey) && loggingState.FileLoggerProvider is not null)
         {
-            Logging.AddProvider((logLevel, services) => new ServerLoggerForwarderProvider(services, logLevel));
+            var serverLoggerProxy = new ServerLoggerForwarderProvider(loggingState.LogLevel, serviceProvider);
+            serviceProvider.AddService(serverLoggerProxy);
+            Logging.AddProvider((logLevel, services) => serverLoggerProxy);
         }
 
         // Build the logger factory.
@@ -328,7 +330,7 @@ internal class TestHostBuilder(IFileSystem fileSystem, IRuntimeFeature runtimeFe
         // Setup the test host working folder.
         // Out of the test host controller extension the current working directory is the test host working directory.
         string? currentWorkingDirectory = configuration[PlatformConfigurationConstants.PlatformCurrentWorkingDirectory];
-        ArgumentGuard.IsNotNull(currentWorkingDirectory);
+        ApplicationStateGuard.Ensure(currentWorkingDirectory is not null);
         configuration.SetTestHostWorkingDirectory(currentWorkingDirectory);
 
         // If we're under test controllers and currently we're inside the started test host we connect to the out of process

@@ -194,7 +194,7 @@ public class DiagnosticTests : AcceptanceTestBase
         testHostResult.AssertOutputContains("Diagnostic file");
     }
 
-    private async Task<string> AssertDiagnosticReportWasGeneratedAsync(TestHostResult testHostResult, string diagPathPattern, string level = "Information", string flushType = "async")
+    private async Task<string> AssertDiagnosticReportWasGeneratedAsync(TestHostResult testHostResult, string diagPathPattern, string level = "Trace", string flushType = "async")
     {
         testHostResult.AssertExitCodeIs(ExitCodes.Success);
 
@@ -207,10 +207,11 @@ Diagnostic file \(level '{level}' with {flushType} flush\): {diagPathPattern}
 
         string diagContentsPattern =
 """
-\[.* - Information\] Version: .*
-\[.* - Information] Logging level: .*
-\[.* - Information\] CreateBuilderAsync entry time: .*
-\[.* - Information\] PID: .*
+.+ Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: .+
+.+ Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: .+
+.+ Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: .+
+.+ Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: .+
+.+ Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: .+
 """;
         (bool isMatch, string content) = await CheckDiagnosticContentsMatchAsync(match.Value, diagContentsPattern);
         Assert.IsTrue(isMatch, $"{content}\n{diagContentsPattern}");

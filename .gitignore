@@ -141,3 +141,4 @@ project.fragment.lock.json
 
 # Playground project (use force add if a change is really worth it)
 /samples/Playground/
+/Visual Studio 2022/Visualizers/attribcache140.bin

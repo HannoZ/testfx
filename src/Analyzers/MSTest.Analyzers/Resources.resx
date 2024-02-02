@@ -138,7 +138,7 @@
   <data name="TestClassShouldBeValidDescription" xml:space="preserve">
     <value>Test classes, classes marked with the '[TestClass]' attribute, should respect the following layout to be considered valid by MSTest:
 - it should be 'public' (or 'internal' if '[assembly: DiscoverInternals]' attribute is set)
-- it should not be 'static'
+- it should not be 'static' (except if it contains only 'AssemblyInitialize' and/or 'AssemblyCleanup' methods)
 - it should not be generic.</value>
   </data>
   <data name="TestClassShouldBeValidMessageFormat_NotGeneric" xml:space="preserve">
@@ -213,10 +213,16 @@
     <value>Test method '{0}' should be 'public' or 'internal'</value>
   </data>
   <data name="TestMethodShouldBeValidMessageFormat_ReturnType" xml:space="preserve">
-    <value>Test method '{0}' should return 'void' or 'Task'</value>
+    <value>Test method '{0}' should return 'void', 'Task' or 'ValueTask'</value>
   </data>
   <data name="TestMethodShouldBeValidTitle" xml:space="preserve">
     <value>Test methods should have valid layout</value>
+  </data>
+  <data name="UseAttributeOnTestMethodAnalyzerMessageFormat" xml:space="preserve">
+    <value>[{0}] can only be set on methods marked with [TestMethod]</value>
+  </data>
+  <data name="UseAttributeOnTestMethodAnalyzerTitle" xml:space="preserve">
+    <value>[{0}] can only be set on methods marked with [TestMethod]</value>
   </data>
   <data name="UseParallelizeAttributeAnalyzerDescription" xml:space="preserve">
     <value>By default, MSTest runs tests within the same assembly sequentially, which can lead to severe performance limitations. It is recommended to enable assembly attribute '[Parallelize]' to run tests in parallel, or if the assembly is known to not be parallelizable, to use explicitly the assembly level attribute '[DoNotParallelize]'.</value>

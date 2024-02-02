@@ -2,8 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.Testing.Framework;
+using Microsoft.Testing.Platform.Hosts;
 using Microsoft.Testing.Platform.ServerMode;
-using Microsoft.Testing.Platform.Services;
 using Microsoft.Testing.Platform.Telemetry;
 using Microsoft.Testing.TestInfrastructure;
 
@@ -20,10 +20,7 @@ public sealed class ServerTelemetryTests : TestBase
     public ServerTelemetryTests(ITestExecutionContext testExecutionContext)
         : base(testExecutionContext)
     {
-        var serviceProvider = new ServiceProvider();
-        _serverTestHost.Setup(s => s.IsInitialized).Returns(true);
-        serviceProvider.AddService(_serverTestHost.Object);
-        _serverTelemetry = new(serviceProvider);
+        _serverTelemetry = new(_serverTestHost.Object);
     }
 
     public async Task LogEvent_ForDiscovery()

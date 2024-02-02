@@ -97,39 +97,14 @@
         <target state="translated">L'élément à l'index {1} n'est pas du type attendu. Type attendu : &lt;{2}&gt;, Type réel : &lt;{3}&gt;.{0}</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="ElementTypesAtIndexDontMatch2">
-        <source>Element at index {1} is (null). Expected type:&lt;{2}&gt;.{0}</source>
-        <target state="translated">L'élément à l'index {1} est (null). Type attendu : &lt;{2}&gt;.{0}</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="EndsWithFail">
         <source>String '{0}' does not end with string '{1}'. {2}.</source>
         <target state="translated">La chaîne '{0}' ne se termine pas par la chaîne '{1}'. {2}.</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="EqualsTesterInvalidArgs">
-        <source>Invalid argument- EqualsTester can't use nulls.</source>
-        <target state="translated">Argument non valide - EqualsTester ne peut pas utiliser de valeur null.</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="ErrorInvalidCast">
-        <source>Cannot convert object of type {0} to {1}.</source>
-        <target state="translated">Impossible de convertir un objet de type {0} en {1}.</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="AssertionFailed">
         <source>{0} failed. {1}</source>
         <target state="translated">Échec de {0}. {1}</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="InternalObjectNotValid">
-        <source>The internal object referenced is no longer valid.</source>
-        <target state="translated">L'objet interne référencé n'est plus valide.</target>
-        <note></note>
-      </trans-unit>
-      <trans-unit id="InvalidParameterToAssert">
-        <source>The parameter '{0}' is invalid. {1}.</source>
-        <target state="translated">Le paramètre '{0}' n'est pas valide. {1}.</target>
         <note></note>
       </trans-unit>
       <trans-unit id="IsInstanceOfFailMsg">
@@ -257,11 +232,6 @@ Message d'exception : {3}
 Trace de la pile : {4}</target>
         <note></note>
       </trans-unit>
-      <trans-unit id="NoDataRow">
-        <source>No test data source specified. Atleast one TestDataSource is required with DataTestMethodAttribute.</source>
-        <target state="translated">Aucune source de données de test spécifiée. Au moins une TestDataSouce est obligatoire avec DataTestMethodAttribute.</target>
-        <note></note>
-      </trans-unit>
       <trans-unit id="DataDrivenResultDisplayName">
         <source>{0} ({1})</source>
         <target state="translated">{0} ({1})</target>
@@ -273,9 +243,9 @@ Trace de la pile : {4}</target>
         <note></note>
       </trans-unit>
       <trans-unit id="DynamicDataIEnumerableNull">
-        <source>Property or method {0} on {1} does not return IEnumerable&lt;object[]&gt;.</source>
-        <target state="translated">La propriété ou la méthode {0} sur {1} ne retourne pas IEnumerable&lt;object[]&gt;.</target>
-        <note></note>
+        <source>Property or method {0} on {1} return type is not assignable to 'IEnumerable&lt;object[]&gt;' (nor 'IEnumerable&lt;ITuple&gt;' for .NET Core).</source>
+        <target state="new">Property or method {0} on {1} return type is not assignable to 'IEnumerable&lt;object[]&gt;' (nor 'IEnumerable&lt;ITuple&gt;' for .NET Core).</target>
+        <note />
       </trans-unit>
       <trans-unit id="DynamicDataValueNull">
         <source>Value returned by property or method {0} shouldn't be null.</source>

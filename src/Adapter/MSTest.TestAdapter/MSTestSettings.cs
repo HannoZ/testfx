@@ -7,9 +7,6 @@ using System.Xml;
 using System.Xml.Linq;
 
 using Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.ObjectModel;
-#if !WINDOWS_UWP
-using Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices;
-#endif
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Adapter;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.Logging;
@@ -60,6 +57,8 @@ public class MSTestSettings
         TestSettingsFile = null;
         DisableParallelization = false;
         TestTimeout = 0;
+        AssemblyInitializeTimeout = 0;
+        ClassInitializeTimeout = 0;
         TreatClassAndAssemblyCleanupWarningsAsErrors = false;
     }
 
@@ -148,6 +147,16 @@ public class MSTestSettings
     public int TestTimeout { get; private set; }
 
     /// <summary>
+    ///  Gets specified global AssemblyInitialize timeout.
+    /// </summary>
+    internal int AssemblyInitializeTimeout { get; private set; }
+
+    /// <summary>
+    ///  Gets specified global ClassInitializeTimeout timeout.
+    /// </summary>
+    internal int ClassInitializeTimeout { get; private set; }
+
+    /// <summary>
     /// Gets a value indicating whether failures in class cleanups should be treated as errors.
     /// </summary>
     public bool TreatClassAndAssemblyCleanupWarningsAsErrors { get; private set; }
@@ -176,6 +185,8 @@ public class MSTestSettings
         CurrentSettings.DisableParallelization = settings.DisableParallelization;
         CurrentSettings.TestTimeout = settings.TestTimeout;
         CurrentSettings.TreatClassAndAssemblyCleanupWarningsAsErrors = settings.TreatClassAndAssemblyCleanupWarningsAsErrors;
+        CurrentSettings.AssemblyInitializeTimeout = settings.AssemblyInitializeTimeout;
+        CurrentSettings.ClassInitializeTimeout = settings.ClassInitializeTimeout;
     }
 
     /// <summary>
@@ -425,6 +436,26 @@ public class MSTestSettings
                             break;
                         }
 
+                    case "ASSEMBLYINITIALIZETIMEOUT":
+                        {
+                            if (int.TryParse(reader.ReadInnerXml(), out int assemblyInitializeTimeout) && assemblyInitializeTimeout > 0)
+                            {
+                                settings.AssemblyInitializeTimeout = assemblyInitializeTimeout;
+                            }
+
+                            break;
+                        }
+
+                    case "CLASSINITIALIZETIMEOUT":
+                        {
+                            if (int.TryParse(reader.ReadInnerXml(), out int classInitializeTimeout) && classInitializeTimeout > 0)
+                            {
+                                settings.ClassInitializeTimeout = classInitializeTimeout;
+                            }
+
+                            break;
+                        }
+
                     case "TREATCLASSANDASSEMBLYCLEANUPWARNINGSASERRORS":
                         {
                             if (bool.TryParse(reader.ReadInnerXml(), out result))
@@ -447,13 +478,6 @@ public class MSTestSettings
         }
 
         return settings;
-    }
-
-    internal static void ValidateSettings(IMessageLogger logger)
-    {
-#if !WINDOWS_UWP
-        MSTestSettingsProvider.Settings.ValidateSettings(logger);
-#endif
     }
 
     private static void SetParallelSettings(XmlReader reader, MSTestSettings settings)
